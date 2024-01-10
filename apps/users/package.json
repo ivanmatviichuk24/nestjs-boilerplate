@@ -1,0 +1,11 @@
+{
+  "name": "users-service",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "prisma": {
+    "schema": "./src/db/schema.prisma"
+  }
+}
