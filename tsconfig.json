@@ -18,12 +18,16 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "common/common": [
+      "@app/common": [
         "libs/common/src"
       ],
-      "common/common/*": [
+      "@app/common/*": [
         "libs/common/src/*"
       ]
     }
-  }
+  },
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval"
+  },
+  "exclude": ["node_modules", "./dist/**/*"]
 }

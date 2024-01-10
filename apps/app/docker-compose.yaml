@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  app-server:
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ../../:/usr/src/app
+      - /usr/src/app/node_modules/
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - WATCHPACK_POLLING=true
+    env_file:
+      - ./.env
+    command: bash -c "if [ $NODE_ENV == 'testing' ]; then pnpm run test:e2e; else pnpm run start:dev app; fi;"
+    build: 
+      context: ../../
+      dockerfile: ./apps/app/Dockerfile

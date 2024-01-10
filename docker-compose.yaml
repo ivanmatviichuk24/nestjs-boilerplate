@@ -1,0 +1,17 @@
+version: "3"
+
+include: 
+   - ./apps/app/docker-compose.yaml
+   - ./apps/users/docker-compose.yaml
+services:
+  broker:
+    image: rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    expose:
+      - ${BROKER_PORT}
+    ports:
+      - ${BROKER_PORT}:${BROKER_PORT}

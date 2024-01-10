@@ -6,9 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     UsersModule,
     {
-      transport: Transport.MQTT,
+      transport: Transport.RMQ,
       options: {
-        url: 'mqtt://localhost:1883',
+        urls: ['amqp://host.docker.internal:5672'],
+        queue: 'users_queue',
+        queueOptions: {
+          durable: true,
+        },
       },
     },
   )
