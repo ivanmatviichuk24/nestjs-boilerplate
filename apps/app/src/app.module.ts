@@ -1,26 +1,27 @@
 import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { UsersController } from './users.controller'
 import { AppService } from './app.service'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientProxyFactory } from '@nestjs/microservices'
+import { broker, constants } from './config'
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'USERS_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://host.docker.internal:5672'],
-          queue: 'users_queue',
-          queueOptions: {
-            durable: true,
-          },
-        },
-      },
-    ]),
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      load: [broker],
+    }),
   ],
   controllers: [AppController, UsersController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: constants.USERS_SERVICE,
+      useFactory: (configService: ConfigService) =>
+        ClientProxyFactory.create(configService.get('broker')('users_queue')),
+      inject: [ConfigService],
+    },
+  ],
 })
 export class AppModule {}
