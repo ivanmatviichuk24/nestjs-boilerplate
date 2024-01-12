@@ -7,7 +7,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @MessagePattern('getHello')
-  getHello(): string {
+  getHello(): Promise<string> {
     return this.usersService.getHello()
   }
 }
