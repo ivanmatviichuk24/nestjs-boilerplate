@@ -7,14 +7,7 @@ import { Kysely, PostgresDialect } from 'kysely'
 export class DatabaseConnection<T extends object> extends Kysely<T> {
   constructor(config: ConfigService) {
     const dialect = new PostgresDialect({
-      pool: new Pool({
-        database: config.getOrThrow('database.name'),
-        host: config.getOrThrow('database.host'),
-        user: config.getOrThrow('database.user'),
-        port: config.getOrThrow('database.port'),
-        password: config.getOrThrow('database.password'),
-        max: 15,
-      }),
+      pool: new Pool(config.getOrThrow('database')),
     })
 
     super({ dialect })
