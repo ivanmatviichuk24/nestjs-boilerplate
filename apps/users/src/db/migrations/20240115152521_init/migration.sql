@@ -1,6 +1,8 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
     "name_first" TEXT NOT NULL DEFAULT '',
     "name_last" TEXT NOT NULL DEFAULT '',
     "password" TEXT,
@@ -9,3 +11,9 @@ CREATE TABLE "users" (
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_phone_key" ON "users"("phone");
