@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { AppController } from './app.controller'
 import { UsersController } from './users.controller'
-import { AppService } from './app.service'
 import { ClientProxyFactory } from '@nestjs/microservices'
 import { broker, constants } from './config'
 
@@ -13,9 +11,8 @@ import { broker, constants } from './config'
       load: [broker],
     }),
   ],
-  controllers: [AppController, UsersController],
+  controllers: [UsersController],
   providers: [
-    AppService,
     {
       provide: constants.USERS_SERVICE,
       useFactory: (configService: ConfigService) =>
