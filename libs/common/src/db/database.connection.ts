@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Pool } from 'pg'
-import { Kysely, PostgresDialect } from 'kysely'
+import { Kysely, PostgresDialect, CamelCasePlugin } from 'kysely'
 
 @Injectable()
 export class DatabaseConnection<T extends object> extends Kysely<T> {
@@ -10,6 +10,6 @@ export class DatabaseConnection<T extends object> extends Kysely<T> {
       pool: new Pool(config.getOrThrow('database')),
     })
 
-    super({ dialect })
+    super({ dialect, plugins: [new CamelCasePlugin()] })
   }
 }
