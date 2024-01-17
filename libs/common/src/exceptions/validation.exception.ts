@@ -6,8 +6,6 @@ import {
 import { RpcException } from '@nestjs/microservices'
 
 export const validationExceptionFactory = (errors: ValidationError[]) => {
-  console.log(errors)
-
   const formatError = (errors: ValidationError[]) => {
     const errMsg = errors.reduce(
       (acc, error: ValidationError) => {
