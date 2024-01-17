@@ -1,0 +1,5 @@
+export const USERS_CREATE = 'create'
+export const USERS_UPDATE = 'update'
+export const USERS_GET = 'get'
+export const USERS_GET_LIST = 'getList'
+export const USERS_DELETE = 'delete'
