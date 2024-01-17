@@ -1,13 +1,41 @@
-import { Controller } from '@nestjs/common'
-import { MessagePattern } from '@nestjs/microservices'
+import { Controller, ParseUUIDPipe } from '@nestjs/common'
+import { MessagePattern, Payload } from '@nestjs/microservices'
 import { UsersService } from './users.service'
+import { CreateUserDto } from '@app/common/dto'
+import {
+  USERS_CREATE,
+  USERS_DELETE,
+  USERS_GET,
+  USERS_GET_LIST,
+  USERS_UPDATE,
+} from '@app/common/constants'
 
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @MessagePattern('getHello')
-  getHello(): Promise<string> {
-    return this.usersService.getHello()
+  @MessagePattern(USERS_CREATE)
+  create(@Payload() data: CreateUserDto) {
+    return this.usersService.create(data)
+  }
+
+  @MessagePattern(USERS_UPDATE)
+  update(@Payload() { id, ...data }: any) {
+    return this.usersService.update(id, data)
+  }
+
+  @MessagePattern(USERS_DELETE)
+  delete(@Payload(ParseUUIDPipe) id: string) {
+    return this.usersService.delete(id)
+  }
+
+  @MessagePattern(USERS_GET)
+  get(@Payload(ParseUUIDPipe) id: string) {
+    return this.usersService.get(id)
+  }
+
+  @MessagePattern(USERS_GET_LIST)
+  getList(@Payload() data: any) {
+    return this.usersService.getList(data)
   }
 }
