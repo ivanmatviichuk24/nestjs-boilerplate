@@ -7,8 +7,8 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export type User = {
   id: Generated<string>
-  email: string
-  phone: string
+  email: string | null
+  phone: string | null
   name_first: Generated<string>
   name_last: Generated<string>
   password: string | null
