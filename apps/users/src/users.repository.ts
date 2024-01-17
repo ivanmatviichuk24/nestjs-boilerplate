@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { DB } from './db/types'
 import { DatabaseConnection, filterValue, Repository } from '@app/common/db'
+import { isUUID } from 'class-validator'
 
 @Injectable()
 export class UsersRepository extends Repository<
@@ -19,11 +20,11 @@ export class UsersRepository extends Repository<
       .selectFrom(this.table)
       .selectAll()
       .where((eb) => {
-        return eb.or([
-          eb('id', '=', id),
-          eb('email', '=', id),
-          eb('phone', '=', id),
-        ])
+        if (isUUID(id)) {
+          return eb('id', '=', id)
+        }
+
+        return eb.or([eb('email', '=', id), eb('phone', '=', id)])
       })
   }
 }
