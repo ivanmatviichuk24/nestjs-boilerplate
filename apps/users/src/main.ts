@@ -3,6 +3,7 @@ import { UsersModule } from './users.module'
 import { Transport } from '@nestjs/microservices'
 import { ConfigService } from '@nestjs/config'
 import { ValidationPipe } from '@nestjs/common'
+import { validationExceptionFactory } from '@app/common/exceptions'
 
 async function bootstrap() {
   const app = await NestFactory.create(UsersModule)
@@ -28,7 +29,7 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
       whitelist: true,
-      transformOptions: { enableImplicitConversion: true },
+      exceptionFactory: validationExceptionFactory,
     }),
   )
 
