@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { UsersModule } from './users.module'
 import { Transport } from '@nestjs/microservices'
 import { ConfigService } from '@nestjs/config'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(UsersModule)
@@ -22,6 +23,14 @@ async function bootstrap() {
       },
     },
   })
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  )
 
   await app.startAllMicroservices()
 }
