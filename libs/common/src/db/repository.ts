@@ -3,28 +3,10 @@ import {
   InsertObject,
   ReferenceExpression,
   UpdateObject,
-  QueryCreator,
   ExpressionBuilder,
   ExpressionWrapper,
   SqlBool,
 } from 'kysely'
-
-export const filterValue = <
-  DB extends object,
-  TableName extends keyof DB & string,
-  T extends ExpressionBuilder<DB, TableName>,
->(
-  key: string,
-  value: any,
-) => {
-  return (eb: T) => {
-    if (Array.isArray(value) || value instanceof QueryCreator) {
-      return eb(key as ReferenceExpression<DB, TableName>, 'in', value)
-    }
-
-    return eb(key as ReferenceExpression<DB, TableName>, '=', value)
-  }
-}
 
 export class Repository<
   DB extends object,
@@ -32,8 +14,8 @@ export class Repository<
   Filters extends object,
 > {
   constructor(
-    private readonly table: TableName,
-    private readonly db: Kysely<DB>,
+    readonly table: TableName,
+    readonly db: Kysely<DB>,
     private readonly filters: {
       [x: string]: (
         value: any,

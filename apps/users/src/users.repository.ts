@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Repository, filterValue } from '@app/common'
 import { DB } from './db/types'
-import { DatabaseConnection } from '@app/common/db'
+import { DatabaseConnection, filterValue, Repository } from '@app/common/db'
 
 @Injectable()
 export class UsersRepository extends Repository<
@@ -13,5 +12,18 @@ export class UsersRepository extends Repository<
     super('users', databaseConnection, {
       id: (id: string | string[] | null) => filterValue('id', id),
     })
+  }
+
+  findOne(id: string) {
+    return this.db
+      .selectFrom(this.table)
+      .selectAll()
+      .where((eb) => {
+        return eb.or([
+          eb('id', '=', id),
+          eb('email', '=', id),
+          eb('phone', '=', id),
+        ])
+      })
   }
 }
