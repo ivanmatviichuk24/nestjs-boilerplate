@@ -12,11 +12,10 @@ import {
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { ClientProxy } from '@nestjs/microservices'
-import { CreateUserDto, UserEntity, UserFiltersDto } from '@app/common/dto'
-import { constants } from './config'
+import { UserEntity, UserFiltersDto } from '@app/common/dto'
 import { lastValueFrom } from 'rxjs'
 import {
-  USERS_CREATE,
+  USERS_SERVICE,
   USERS_DELETE,
   USERS_GET,
   USERS_GET_LIST,
@@ -26,9 +25,7 @@ import {
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(
-    @Inject(constants.USERS_SERVICE) private usersClient: ClientProxy,
-  ) {}
+  constructor(@Inject(USERS_SERVICE) private usersClient: ClientProxy) {}
 
   @Get()
   async getList(@Query() filters: UserFiltersDto) {
@@ -43,13 +40,6 @@ export class UsersController {
   async get(@Param('id', ParseUUIDPipe) id: string) {
     return new UserEntity(
       await lastValueFrom(this.usersClient.send(USERS_GET, id)),
-    )
-  }
-
-  @Post()
-  async create(@Body() data: CreateUserDto) {
-    return new UserEntity(
-      await lastValueFrom(this.usersClient.send(USERS_CREATE, data)),
     )
   }
 

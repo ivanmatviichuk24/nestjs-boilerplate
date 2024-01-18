@@ -32,6 +32,6 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @IsStrongPassword()
+  @IsStrongPassword({ minLength: 8, minUppercase: 0, minSymbols: 0 })
   password: string
 }

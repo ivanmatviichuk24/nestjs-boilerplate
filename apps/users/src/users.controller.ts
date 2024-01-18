@@ -30,7 +30,7 @@ export class UsersController {
   }
 
   @MessagePattern(USERS_GET)
-  get(@Payload(ParseUUIDPipe) id: string) {
+  get(@Payload() id: string) {
     return this.usersService.get(id)
   }
 
