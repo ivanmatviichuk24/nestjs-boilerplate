@@ -3,6 +3,7 @@ version: "3"
 include: 
    - ./apps/app/docker-compose.yaml
    - ./apps/users/docker-compose.yaml
+   - ./apps/auth/docker-compose.yaml
 services:
   broker:
     image: rabbitmq

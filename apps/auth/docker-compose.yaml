@@ -26,9 +26,9 @@ services:
       - WATCHPACK_POLLING=true
     env_file:
       - ./.env
-    command: bash -c "if [ $NODE_ENV == 'testing' ]; then pnpm run test:e2e; else pnpm run start:dev users; fi;"
+    command: bash -c "if [ $NODE_ENV == 'testing' ]; then pnpm run test:e2e; else pnpm run start:dev auth; fi;"
     build: 
       context: ../../
-      dockerfile: ./apps/users/Dockerfile
+      dockerfile: ./apps/auth/Dockerfile
     depends_on:
-      - users-database
+      - auth-database
