@@ -16,3 +16,19 @@ services:
       - ${BROKER_PORT}
     ports:
       - ${BROKER_PORT}:${BROKER_PORT}
+  database:
+    image: postgres
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_EXTERNAL_PORT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${DB_HOST}:${DB_EXTERNAL_PORT}"]
+      interval: 10s
+      timeout: 2s
+      retries: 5

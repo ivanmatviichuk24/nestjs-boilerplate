@@ -10,6 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Nestjs boilerplate')
     .setDescription('API description')
     .setVersion('0.0.1')

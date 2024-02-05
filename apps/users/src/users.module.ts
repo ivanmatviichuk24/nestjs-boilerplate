@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common'
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
-import { ConfigModule } from '@nestjs/config'
-import database from './config/database'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
+import { jwt, database } from './config'
 import { UsersRepository } from './users.repository'
 import { DatabaseModule, DatabaseConnection } from '@app/common/db'
 
@@ -10,9 +11,15 @@ import { DatabaseModule, DatabaseConnection } from '@app/common/db'
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env'],
-      load: [database],
+      load: [database, jwt],
     }),
     DatabaseModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) =>
+        configService.get('jwt'),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository, DatabaseConnection],

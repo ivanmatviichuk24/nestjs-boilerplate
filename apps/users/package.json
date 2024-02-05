@@ -4,8 +4,5 @@
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
-  "prisma": {
-    "schema": "./src/db/schema.prisma"
-  }
+  "license": "UNLICENSED"
 }

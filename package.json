@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "prisma": {
+    "schema": "./libs/common/src/db/schema.prisma"
+  },
   "scripts": {
     "build": "nest build",
     "migrate:dev": "npx prisma migrate dev",

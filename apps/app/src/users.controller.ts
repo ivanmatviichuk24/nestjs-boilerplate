@@ -2,16 +2,16 @@ import {
   Controller,
   Get,
   Inject,
-  Post,
   Delete,
   Put,
   Param,
-  Body,
   ParseUUIDPipe,
   Query,
+  Req,
+  Headers,
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
-import { ClientProxy } from '@nestjs/microservices'
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
+import { ClientProxy, RmqRecordBuilder } from '@nestjs/microservices'
 import { UserEntity, UserFiltersDto } from '@app/common/dto'
 import { lastValueFrom } from 'rxjs'
 import {
@@ -28,9 +28,16 @@ export class UsersController {
   constructor(@Inject(USERS_SERVICE) private usersClient: ClientProxy) {}
 
   @Get()
-  async getList(@Query() filters: UserFiltersDto) {
+  // @ApiBearerAuth()
+  async getList(@Query() filters: UserFiltersDto, @Headers() headers) {
+    const message = new RmqRecordBuilder(filters)
+      .setOptions({
+        headers,
+      })
+      .build()
+
     const users = await lastValueFrom(
-      this.usersClient.send(USERS_GET_LIST, filters),
+      this.usersClient.send(USERS_GET_LIST, message),
     )
 
     return users.map((user) => new UserEntity(user as any))

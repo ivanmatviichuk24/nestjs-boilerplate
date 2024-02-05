@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { DB } from './db/types'
-import { DatabaseConnection, filterValue, Repository } from '@app/common/db'
+import { DatabaseConnection, filterValue, Repository, DB } from '@app/common/db'
 import { isUUID } from 'class-validator'
 
 @Injectable()

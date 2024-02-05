@@ -1,4 +1,4 @@
-import { Controller, ParseUUIDPipe } from '@nestjs/common'
+import { Controller, ParseUUIDPipe, UseGuards } from '@nestjs/common'
 import { MessagePattern, Payload } from '@nestjs/microservices'
 import { UsersService } from './users.service'
 import { CreateUserDto } from '@app/common/dto'
@@ -9,6 +9,7 @@ import {
   USERS_GET_LIST,
   USERS_UPDATE,
 } from '@app/common/constants'
+import { AuthGuard } from '@app/common/guards'
 
 @Controller()
 export class UsersController {
@@ -34,6 +35,7 @@ export class UsersController {
     return this.usersService.get(id)
   }
 
+  // @UseGuards(AuthGuard)
   @MessagePattern(USERS_GET_LIST)
   getList(@Payload() data: any) {
     return this.usersService.getList(data)
